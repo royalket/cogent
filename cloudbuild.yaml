@@ -1,8 +1,10 @@
 # Cloud Build YAML file
 steps:
-  # Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'
+  # Build the Docker image (using a base image)
+  - name: 'node:16'  # Replace 'node:16' with your desired base image
     args: ['build', '-t', 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository:$COMMIT_SHA', '.']
+
+
 
   # Push the Docker image to the Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
