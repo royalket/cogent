@@ -17,7 +17,5 @@ substitutions:
   _COMMIT_SHA: '${COMMIT_SHA}'
 
 #error resolve
-  options:
-  logging: CLOUD_LOGGING_ONLY
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+logsBucket: 'gs://cogent-426809_cloudbuild/source'
 
