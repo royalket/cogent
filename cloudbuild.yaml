@@ -4,9 +4,10 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository:$COMMIT_SHA', '.']
 
-  # Push the Docker image to the Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository:$COMMIT_SHA']
+# Push the Docker image to the Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository:$_COMMIT_SHA']
+
 
 # Specify the Docker image to use for the build
 images:
