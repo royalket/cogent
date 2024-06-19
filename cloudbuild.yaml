@@ -16,7 +16,3 @@ images:
 substitutions:
   _COMMIT_SHA: '${COMMIT_SHA}'
 
-# Configure Docker to use the Artifact Registry
-options:
-  docker:
-    artifactregistry: 'us-central1-docker.pkg.dev'
