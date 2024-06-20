@@ -19,6 +19,8 @@ steps:
 
 # Optionally, you can add steps to run tests or any other custom steps
 # before or after building and pushing the Docker image.
+options:
+  logsBucket: 'gs://cogent-426809_cloudbuild'
 
 images:
 - 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository/IMAGE_NAME:$SHORT_SHA'
