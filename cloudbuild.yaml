@@ -28,5 +28,9 @@ options:
   logging: GCS_ONLY
   logsBucket: 'gs://cogent-426809_cloudbuild'
 
+    options:
+  logging: CLOUD_LOGGING_ONLY
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+
 # Optionally, you can specify a service account if needed
 # serviceAccount: 'projects/cogent-426809/serviceAccounts/your-service-account@cogent-426809.iam.gserviceaccount.com'
