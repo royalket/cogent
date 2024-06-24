@@ -5,6 +5,10 @@ steps:
     entrypoint: npm
     args: ['install']
 
+  - name: 'node:16.15.0-bullseye-slim'
+    entrypoint: node
+    args: ['-v']
+
   # Build the TypeScript project
   - name: 'node:16.15.0-bullseye-slim'
     entrypoint: npm
