@@ -1,12 +1,12 @@
 # Cloud Build YAML file
 steps:
   # Install dependencies
-  - name: 'node:14.18.2-bullseye-slim'
+  - name: 'node:16.15.0-bullseye-slim'
     entrypoint: npm
     args: ['install']
 
   # Build the TypeScript project
-  - name: 'node:14.18.2-bullseye-slim'
+  - name: 'node:16.15.0-bullseye-slim'
     entrypoint: npm
     args: ['run', 'build']
 
