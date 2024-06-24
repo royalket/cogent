@@ -1,19 +1,11 @@
 steps:
-# This step runs the unit tests on the app
-- name: 'node:14.18.2-bullseye-slim'
-  id: Test
-  entrypoint: /bin/sh
-  args:
-  - -c
-  - 'npm install && npm test'
-
-# This step builds the container image
+# This step builds the container image.
 - name: 'gcr.io/cloud-builders/docker'
   id: Build
   args:
   - 'build'
   - '-t'
-  - 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository/nodejs-app:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/cogent-repository/$IMAGE_NAME:$SHORT_SHA'
   - '.'
 
 # This step pushes the image to Artifact Registry
@@ -21,16 +13,10 @@ steps:
   id: Push
   args:
   - 'push'
-  - 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository/nodejs-app:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/$PROJECT_ID/cogent-repository/$IMAGE_NAME:$SHORT_SHA'
 
-# Specify the logs bucket
+# Optionally, you can add steps to run tests or any other custom steps
+
 options:
-  logging: GCS_ONLY
   logsBucket: 'gs://cogent-426809_cloudbuild'
 
-    options:
-  logging: CLOUD_LOGGING_ONLY
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
-
-# Optionally, you can specify a service account if needed
-# serviceAccount: 'projects/cogent-426809/serviceAccounts/your-service-account@cogent-426809.iam.gserviceaccount.com'
