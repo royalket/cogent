@@ -1,22 +1,20 @@
+# Cloud Build YAML file
 steps:
-# This step builds the container image.
-- name: 'gcr.io/cloud-builders/docker'
-  id: Build
-  args:
-  - 'build'
-  - '-t'
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/cogent-repository/$IMAGE_NAME:$SHORT_SHA'
-  - '.'
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository:$COMMIT_SHA', '.']
 
-# This step pushes the image to Artifact Registry
-- name: 'gcr.io/cloud-builders/docker'
-  id: Push
-  args:
-  - 'push'
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/cogent-repository/$IMAGE_NAME:$SHORT_SHA'
+  # Push the Docker image to the Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository:$COMMIT_SHA']
 
-# Optionally, you can add steps to run tests or any other custom steps
+# Specify the Docker image to use for the build
+images:
+  - 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository:$COMMIT_SHA'
 
-options:
-  logsBucket: 'gs://cogent-426809_cloudbuild'
+# Use the commit SHA as the Docker image tag
+substitutions:
+  _COMMIT_SHA: '${COMMIT_SHA}'
 
+# Specify the logs bucket
+logsBucket: 'gs://cogent-426809_cloudbuild/source'
