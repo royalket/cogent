@@ -1,26 +1,24 @@
 steps:
-# This step builds the container image.
+# This step runs the unit tests on the app
+- name: 'node:14.18.2-bullseye-slim'
+  id: Test
+  entrypoint: /bin/sh
+  args:
+  - -c
+  - 'npm install && npm test'
+
+# This step builds the container image
 - name: 'gcr.io/cloud-builders/docker'
   id: Build
   args:
   - 'build'
   - '-t'
-  - 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository/IMAGE_NAME:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository/nodejs-app:$SHORT_SHA'
   - '.'
 
 # This step pushes the image to Artifact Registry
-# The PROJECT_ID and SHORT_SHA variables are automatically
-# replaced by Cloud Build.
 - name: 'gcr.io/cloud-builders/docker'
   id: Push
   args:
   - 'push'
-  - 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository/IMAGE_NAME:$SHORT_SHA'
-
-# Optionally, you can add steps to run tests or any other custom steps
-# before or after building and pushing the Docker image.
-options:
-  logsBucket: 'gs://cogent-426809_cloudbuild'
-
-images:
-- 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository/IMAGE_NAME:$SHORT_SHA'
+  - 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository/nodejs-app:$SHORT_SHA'
