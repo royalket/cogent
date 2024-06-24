@@ -22,3 +22,11 @@ steps:
   args:
   - 'push'
   - 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository/nodejs-app:$SHORT_SHA'
+
+# Specify the logs bucket
+options:
+  logging: GCS_ONLY
+  logsBucket: 'gs://cogent-426809_cloudbuild'
+
+# Optionally, you can specify a service account if needed
+# serviceAccount: 'projects/cogent-426809/serviceAccounts/your-service-account@cogent-426809.iam.gserviceaccount.com'
