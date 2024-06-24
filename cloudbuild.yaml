@@ -1,5 +1,15 @@
 # Cloud Build YAML file
 steps:
+  # Install dependencies
+  - name: 'node:14.18.2-bullseye-slim'
+    entrypoint: npm
+    args: ['install']
+
+  # Build the TypeScript project
+  - name: 'node:14.18.2-bullseye-slim'
+    entrypoint: npm
+    args: ['run', 'build']
+
   # Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/cogent-426809/cogent-repository:$COMMIT_SHA', '.']
