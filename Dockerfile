@@ -1,8 +1,11 @@
 FROM node:14.18.2-bullseye-slim
 
-WORKDIR /usr/src/app
+RUN mkdir /cogentapp
+COPY . /cogentapp
 
-COPY package.json tsconfig.json src .
+
+WORKDIR /cogentapp
+
 
 RUN npm install
 
