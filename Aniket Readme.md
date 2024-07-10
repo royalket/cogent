@@ -20,6 +20,73 @@ The application is deployed to GKE with the following configuration:
 - Zone: us-central1-c
 - Artifact Registry: us-central1-docker.pkg.dev/cogent-426809/cogent-repository/cogent-assignment
 
+
+## Kubernetes Deployment
+
+The application is deployed to Kubernetes using a deployment file (`k8s-deployment.yaml`) that defines the following resources:
+
+1. Secret: `minio-credentials` for storing MinIO access and secret keys.
+
+2. Deployment: `thumbnail-generator`
+   - 2 replicas
+   - Uses the latest image from the Artifact Registry
+   - Sets environment variables for MongoDB and MinIO connections
+   - Defines resource requests and limits
+   - Includes readiness and liveness probes
+
+3. Service: `thumbnail-generator-service`
+   - Type: LoadBalancer
+   - Exposes port 80, targeting container port 3000
+
+4. Deployment: `thumbnail-generator-worker`
+   - 2 replicas
+   - Runs the worker process using `node dist/worker.js`
+   - Shares the same image and most configurations with the main deployment
+
+5. Deployment: `mongo`
+   - Single replica for MongoDB
+
+6. Service: `mongo-service`
+   - Exposes MongoDB on port 27017
+
+7. Deployment: `minio`
+   - Single replica for MinIO
+   - Uses official MinIO image
+
+8. Service: `minio-service`
+   - Exposes MinIO on port 9000
+
+Key points of the deployment:
+
+- The application is split into separate deployments for the API and worker processes, allowing independent scaling.
+- MongoDB and MinIO are deployed within the cluster for simplicity, but in a production environment, managed services would be preferable.
+- Resource requests and limits are set to ensure proper scheduling and prevent resource contention.
+- Secrets are used to manage sensitive information like MinIO credentials.
+
+To apply this deployment:
+
+```bash
+kubectl apply -f k8s-deployment.yaml
+```
+
+## CI/CD Pipeline
+
+The CI/CD pipeline, defined in `cloudbuild.yaml`, includes a step to deploy to GKE using the `k8s-deployment.yaml` file:
+
+```yaml
+- name: 'gcr.io/cloud-builders/gke-deploy'
+  args:
+  - run
+  - --filename=k8s-deployment.yaml
+  - --image=us-central1-docker.pkg.dev/cogent-426809/cogent-repository/cogent-assignment:$COMMIT_SHA
+  - --location=us-central1-c
+  - --cluster=cogent-cloudbuild
+```
+
+This step updates the deployment with the newly built image, tagged with the commit SHA.
+
+```
+
 ## Accessing the API
 
 The application is accessible via the following LoadBalancer IP:
